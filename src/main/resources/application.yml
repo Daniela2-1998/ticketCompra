@@ -8,18 +8,18 @@ spring:
   application:
     name: ticket-api
 
-datasource:
+
+  datasource:
     url: jdbc:mysql://localhost:3306/musica
     username: dani
     password: ih84zYyrcR]bdoe0
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-jpa:
+  jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: update
     show-sql: true
-
 
 eureka:
   client:
@@ -30,7 +30,3 @@ eureka:
   instance:
     preferIpAddress: true
 
-APICDS:
-  url: https://localhost:5050
-  connection-timeout: 5000
-  read-timeout: 5000

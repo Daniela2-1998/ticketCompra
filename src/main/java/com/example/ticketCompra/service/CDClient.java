@@ -10,13 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 @FeignClient(name = "APICDS")
-@Controller
-@EnableFeignClients
-public class CDClient {
+public interface CDClient {
 
     @GetMapping("/cds")
-    public List<CD> getAllCDS();
+    List<CD> getAllCDS();
 
     @GetMapping("/cds/{id}")
-    public Optional<CD> getCDById();
+    Optional<CD> getCDById();
 }

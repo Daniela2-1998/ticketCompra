@@ -1,16 +1,24 @@
 package com.example.ticketCompra.model;
 
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
+
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 
 @Data
-@Getter
-@Setter
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class CD {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String nombre;
@@ -23,25 +31,10 @@ public class CD {
 
     private double precio;
 
+    @JdbcTypeCode(SqlTypes.JSON)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "artista_id")
     private Artista artista;
 
 
-    public CD(Long id, String nombre, LocalDate lanzamiento, int duracion, String genero, double precio) {
-        this.id = id;
-        this.nombre = nombre;
-        this.lanzamiento = lanzamiento;
-        this.duracion = duracion;
-        this.genero = genero;
-        this.precio = precio;
-    }
-
-    public CD(Long id, String nombre, LocalDate lanzamiento, int duracion, String genero, double precio, Artista artista) {
-        this.id = id;
-        this.nombre = nombre;
-        this.lanzamiento = lanzamiento;
-        this.duracion = duracion;
-        this.genero = genero;
-        this.precio = precio;
-        this.artista = artista;
-    }
 }
