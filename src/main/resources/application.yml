@@ -1,0 +1,36 @@
+#spring.application.name=ticketCompra
+
+
+server:
+  port: 5051
+
+spring:
+  application:
+    name: ticket-api
+
+datasource:
+    url: jdbc:mysql://localhost:3306/musica
+    username: dani
+    password: ih84zYyrcR]bdoe0
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    preferIpAddress: true
+
+APICDS:
+  url: https://localhost:5050
+  connection-timeout: 5000
+  read-timeout: 5000
