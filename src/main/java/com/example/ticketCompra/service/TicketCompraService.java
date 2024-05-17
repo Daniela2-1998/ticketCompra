@@ -2,11 +2,12 @@ package com.example.ticketCompra.service;
 
 import com.example.ticketCompra.model.CD;
 import com.example.ticketCompra.model.TicketCompra;
+import com.example.ticketCompra.repository.TicketCompraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TicketCompraService {
@@ -14,20 +15,34 @@ public class TicketCompraService {
     @Autowired
     CDClient cdClient;
 
-    private final List<TicketCompra> ticketsCompras = new ArrayList<>();
+    @Autowired
+    TicketCompraRepository ticketCompraRepository;
+
 
     public List<TicketCompra> getAllTickets(){
-        return ticketsCompras;
+        List<TicketCompra> tickets = ticketCompraRepository.findAll();
+        return tickets;
     }
 
-    public TicketCompra addTicket(TicketCompra ticketCompra, Long id){
-        CD cdParaTicket = cdClient.getCDById()
-                .orElseThrow(() -> new RuntimeException("CD N°: " + id + " no encontrado"));
+    public TicketCompra createTicket(TicketCompra ticketCompra, Long cdId){
+        CD cd = cdClient.buscarCDPorId(cdId)
+                .orElseThrow(() -> new IllegalArgumentException("No fue posible encontrar el CD: " + cdId));
 
-        ticketCompra.setCd(cdParaTicket);
-        ticketsCompras.add(ticketCompra);
-
-        return ticketCompra;
+        ticketCompra.setCd(cd);
+        return ticketCompraRepository.save(ticketCompra);
     }
 
+    public Optional<TicketCompra> buscarTicketPorId(Long id){
+        return ticketCompraRepository.findById(id);
+    }
+
+
+    public Optional<TicketCompra> actualizarTicket(TicketCompra ticketCompra){
+        ticketCompraRepository.save(ticketCompra);
+        return ticketCompraRepository.findById(ticketCompra.getId());
+    }
+
+    public void borrarTicketPorId(Long id){
+        ticketCompraRepository.deleteById(id);
+    }
 }

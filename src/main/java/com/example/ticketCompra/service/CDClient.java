@@ -1,20 +1,23 @@
 package com.example.ticketCompra.service;
 
 import com.example.ticketCompra.model.CD;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
 
-@FeignClient(name = "APICDS")
+@FeignClient(name = "APICDS", url = "http://localhost:5050/cds", configuration = CD.class, dismiss404 = true)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public interface CDClient {
 
-    @GetMapping("/cds")
-    List<CD> getAllCDS();
 
-    @GetMapping("/cds/{id}")
-    Optional<CD> getCDById();
+
+    @GetMapping("")
+    List<CD> findAllCDS();
+
+    @GetMapping("/{id}")
+    Optional<CD> buscarCDPorId(@PathVariable Long id);
 }

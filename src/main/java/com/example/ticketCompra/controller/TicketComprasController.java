@@ -4,7 +4,6 @@ import com.example.ticketCompra.model.CD;
 import com.example.ticketCompra.model.TicketCompra;
 import com.example.ticketCompra.service.CDClient;
 import com.example.ticketCompra.service.TicketCompraService;
-import jakarta.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,23 +20,41 @@ public class TicketComprasController {
     @Autowired
     private CDClient cdClient;
 
+
+    @GetMapping("/cds")
+    public List<CD> findAllCDS(){
+        return cdClient.findAllCDS();
+    }
+
+    @GetMapping("/cds/{id}")
+    public Optional<CD> findCDById(@PathVariable Long id){
+        return cdClient.buscarCDPorId(id);
+    }
+
+
     @GetMapping("")
     public List<TicketCompra> getAllTickets(){
         return ticketCompraService.getAllTickets();
     }
 
-    @GetMapping("/cds")
-    public List<CD> getAllCDS(){
-        return cdClient.getAllCDS();
+    @PostMapping("/agregar")
+    public TicketCompra addTicket(@RequestBody TicketCompra ticketCompra, @RequestParam("cd_id") Long id){
+        return ticketCompraService.createTicket(ticketCompra, id);
     }
 
-    @GetMapping("/cds/{id}")
-    public Optional<CD> findCDById(@PathVariable Long id){
-        return cdClient.getCDById();
+    @GetMapping("/{id}")
+    public Optional<TicketCompra> findTicketById(@PathVariable Long id){
+        return ticketCompraService.buscarTicketPorId(id);
     }
 
-    @PostMapping("/add/{id}")
-    public TicketCompra addTicket(@RequestBody TicketCompra ticketCompra, @PathVariable Long id){
-        return ticketCompraService.addTicket(ticketCompra, id);
+    @DeleteMapping("/eliminar/{id}")
+    public void deleteTicket(@PathVariable Long id){
+        ticketCompraService.borrarTicketPorId(id);
     }
+
+    @PutMapping("/actualizar")
+    public Optional<TicketCompra> updateTicket(@RequestBody TicketCompra ticketCompra){
+        return ticketCompraService.actualizarTicket(ticketCompra);
+    }
+
 }
